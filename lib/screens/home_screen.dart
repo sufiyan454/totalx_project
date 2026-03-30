@@ -13,13 +13,15 @@ class HomeScreen extends StatelessWidget {
     final p = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Users"),
+      backgroundColor: Colors.grey[100],
 
-        // ✅ FILTER ICON
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text("Users", style: TextStyle(color: Colors.black)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list),
+            icon: const Icon(Icons.filter_list, color: Colors.black),
             onPressed: () {
               showModalBottomSheet(
                 context: context,
@@ -31,6 +33,7 @@ class HomeScreen extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
         onPressed: () {
           Navigator.push(
             context,
@@ -41,7 +44,7 @@ class HomeScreen extends StatelessWidget {
       ),
 
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
 
@@ -51,15 +54,18 @@ class HomeScreen extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: "Search",
                 prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
 
-            // 📋 LIST
+            // 📋 USER LIST
             Expanded(
               child: ListView.builder(
                 itemCount: p.users.length,
@@ -67,30 +73,29 @@ class HomeScreen extends StatelessWidget {
                   final u = p.users[index];
 
                   return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    margin: const EdgeInsets.only(bottom: 12),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(
                       children: [
-
                         CircleAvatar(
                           radius: 25,
-                          backgroundImage:
-                              u.image.isNotEmpty ? FileImage(File(u.image)) : null,
+                          backgroundImage: u.image.isNotEmpty
+                              ? FileImage(File(u.image))
+                              : null,
                           child: u.image.isEmpty
                               ? const Icon(Icons.person)
                               : null,
                         ),
-
-                        const SizedBox(width: 10),
-
+                        const SizedBox(width: 12),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(u.name),
+                            Text(u.name,
+                                style: const TextStyle(fontSize: 16)),
                             Text("Age: ${u.age}"),
                           ],
                         )
@@ -107,7 +112,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// ✅ BOTTOM SHEET (SORT)
+// ✅ SORT BOTTOM SHEET (ALREADY INCLUDED)
 Widget buildSortSheet(BuildContext context) {
   final p = Provider.of<UserProvider>(context, listen: false);
 
@@ -117,7 +122,7 @@ Widget buildSortSheet(BuildContext context) {
       mainAxisSize: MainAxisSize.min,
       children: [
 
-        const Text("Sort By"),
+        const Text("Sort By", style: TextStyle(fontSize: 18)),
 
         ListTile(
           title: const Text("All"),

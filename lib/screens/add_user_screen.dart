@@ -19,15 +19,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   File? image;
 
-  // 📸 PICK IMAGE
   Future<void> pickImage() async {
     final picked =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (picked != null) {
-      setState(() {
-        image = File(picked.path);
-      });
+      setState(() => image = File(picked.path));
     }
   }
 
@@ -42,46 +39,59 @@ class _AddUserScreenState extends State<AddUserScreen> {
         child: Column(
           children: [
 
-            // 👤 IMAGE PICKER
             GestureDetector(
               onTap: pickImage,
               child: CircleAvatar(
-                radius: 40,
+                radius: 50,
+                backgroundColor: Colors.grey[200],
                 backgroundImage:
                     image != null ? FileImage(image!) : null,
                 child: image == null
-                    ? const Icon(Icons.add)
+                    ? const Icon(Icons.add, size: 30)
                     : null,
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
-            // 🧾 NAME
             TextField(
               controller: name,
-              decoration: const InputDecoration(hintText: "Name"),
+              decoration: InputDecoration(
+                hintText: "Name",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
 
-            // 📱 PHONE
+            const SizedBox(height: 15),
+
             TextField(
               controller: phone,
-              decoration: const InputDecoration(hintText: "Phone"),
-              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                hintText: "Phone",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
 
-            // 🎂 AGE
+            const SizedBox(height: 15),
+
             TextField(
               controller: age,
-              decoration: const InputDecoration(hintText: "Age"),
-              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: "Age",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
 
-            // 💾 SAVE BUTTON
-            ElevatedButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 p.addUser(
                   UserModel(
                     name: name.text,
@@ -90,10 +100,20 @@ class _AddUserScreenState extends State<AddUserScreen> {
                     image: image?.path ?? "",
                   ),
                 );
-
                 Navigator.pop(context);
               },
-              child: const Text("Save"),
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: const Center(
+                  child: Text("Save",
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
             ),
           ],
         ),
