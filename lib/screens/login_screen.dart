@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-import 'home_screen.dart';
+import 'otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,12 +12,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final phone = TextEditingController();
-  bool sent = false;
-
-  List<TextEditingController> otp =
-      List.generate(6, (_) => TextEditingController());
-
-  String getOtp() => otp.map((e) => e.text).join();
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +25,25 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
+            // 🖼️ IMAGE (replace with asset if needed)
             const Icon(Icons.mobile_friendly, size: 100),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                sent ? "OTP Verification" : "Enter Phone Number",
-                style: const TextStyle(fontSize: 16),
+                "Enter Phone Number",
+                style: TextStyle(fontSize: 16),
               ),
             ),
 
             const SizedBox(height: 10),
 
+            // 📱 PHONE INPUT
             TextField(
               controller: phone,
+              keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 hintText: "Enter Phone Number",
                 filled: true,
@@ -58,46 +55,30 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
 
-            const SizedBox(height: 20),
-
-            if (sent)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(6, (i) {
-                  return SizedBox(
-                    width: 45,
-                    child: TextField(
-                      controller: otp[i],
-                      textAlign: TextAlign.center,
-                      maxLength: 1,
-                      decoration: const InputDecoration(counterText: ""),
-                    ),
-                  );
-                }),
-              ),
-
             const SizedBox(height: 10),
 
-            if (sent)
-              const Text("59 Sec", style: TextStyle(color: Colors.red)),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "By Continuing, I agree to Terms & Conditions",
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
+            // 🔘 GET OTP BUTTON
             GestureDetector(
               onTap: () async {
-                if (!sent) {
-                  await auth.sendOtp(phone.text);
-                  setState(() => sent = true);
-                } else {
-                  await auth.verifyOtp(phone.text, getOtp());
+                await auth.sendOtp(phone.text);
 
-                  if (auth.isLoggedIn) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const HomeScreen()),
-                    );
-                  }
-                }
+                // 👉 GO TO OTP SCREEN
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => OtpScreen(phone: phone.text),
+                  ),
+                );
               },
               child: Container(
                 height: 50,
@@ -106,14 +87,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
-                    sent ? "Verify" : "Get OTP",
-                    style: const TextStyle(color: Colors.white),
+                    "Get OTP",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
