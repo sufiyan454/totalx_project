@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:totakx_project/providers/auth_provider.dart';
+import 'package:totakx_project/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -35,17 +36,25 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-  final auth = Provider.of<AuthProvider>(context, listen: false);
+                final auth = Provider.of<AuthProvider>(context, listen: false);
 
-  if (!sent) {
-    await auth.sendOtp(phone.text);
-    setState(() => sent = true);
-  } else {
-    await auth.verifyOtp(phone.text, otp.text);
-  }
-},
+                if (!sent) {
+                  await auth.sendOtp(phone.text);
+                  setState(() => sent = true);
+                } else {
+                  await auth.verifyOtp(phone.text, otp.text);
+
+                  
+                  if (auth.isLoggedIn) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    );
+                  }
+                }
+              },
               child: Text(sent ? "Verify" : "Send OTP"),
-            )
+            ),
           ],
         ),
       ),

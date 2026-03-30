@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sendotp_flutter_sdk/sendotp_flutter_sdk.dart';
+
 
 class AuthProvider extends ChangeNotifier {
   bool isLoggedIn = false;
@@ -10,7 +10,7 @@ class AuthProvider extends ChangeNotifier {
   // Send OTP
   Future<void> sendOtp(String phone) async {
     try {
-      final response = await SendOtpFlutterSdk.sendOTP(
+      final response = await SendOtpFlutterSdk().sendOTP(
         phoneNumber: phone,
         widgetId: widgetId,
         authKey: authKey,
@@ -25,11 +25,12 @@ class AuthProvider extends ChangeNotifier {
   // Verify OTP
   Future<void> verifyOtp(String phone, String otp) async {
     try {
-      final response = await SendOtpFlutterSdk.verifyOTP(
+      final response = await SendOtpFlutterSdk().verifyOTP(
         phoneNumber: phone,
         otp: otp,
         widgetId: widgetId,
         authKey: authKey,
+        
       );
 
       debugPrint("Verify OTP Response: $response");
