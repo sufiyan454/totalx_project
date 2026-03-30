@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
@@ -21,26 +23,69 @@ class HomeScreen extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      body: Column(
-        children: [
-          TextField(
-            onChanged: p.search,
-            decoration: const InputDecoration(hintText: "Search"),
+      body: Padding(
+  padding: const EdgeInsets.all(12),
+  child: Column(
+    children: [
+
+      // ✅ SEARCH (FIXED)
+      TextField(
+        onChanged: p.search,
+        decoration: InputDecoration(
+          hintText: "Search",
+          prefixIcon: const Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: p.users.length,
-              itemBuilder: (contex,index) {
-                final u = p.users[index];
-                return ListTile(
-                  title: Text(u.name),
-                  subtitle: Text("${u.phone} | Age: ${u.age}"),
-                );
-              },
-            ),
-          )
-        ],
+        ),
       ),
+
+      const SizedBox(height: 10),
+
+      Expanded(
+        child: ListView.builder(
+          itemCount: p.users.length,
+          itemBuilder: (context, index) {
+            final u = p.users[index];
+
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 6),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+
+                  // ✅ IMAGE FIX
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage:
+                        u.image.isNotEmpty ? FileImage(File(u.image)) : null,
+                    child: u.image.isEmpty
+                        ? const Icon(Icons.person)
+                        : null,
+                  ),
+
+                  const SizedBox(width: 10),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(u.name),
+                      Text("Age: ${u.age}"),
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    ],
+  ),
+),
     );
   }
 }
