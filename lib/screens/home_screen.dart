@@ -30,8 +30,8 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               itemCount: p.users.length,
-              itemBuilder: (_, i) {
-                final u = p.users[i];
+              itemBuilder: (contex,index) {
+                final u = p.users[index];
                 return ListTile(
                   title: Text(u.name),
                   subtitle: Text("${u.phone} | Age: ${u.age}"),
