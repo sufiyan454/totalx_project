@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   } else {
     await auth.verifyOtp(phone.text, otp.text);
   }
-}
+},
               child: Text(sent ? "Verify" : "Send OTP"),
             )
           ],
