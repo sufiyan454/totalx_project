@@ -12,15 +12,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final phone = TextEditingController();
-
-  List<TextEditingController> otpControllers =
-      List.generate(6, (_) => TextEditingController());
-
   bool sent = false;
 
-  String getOtp() {
-    return otpControllers.map((e) => e.text).join();
-  }
+  List<TextEditingController> otp =
+      List.generate(6, (_) => TextEditingController());
+
+  String getOtp() => otp.map((e) => e.text).join();
 
   @override
   Widget build(BuildContext context) {
@@ -29,54 +26,63 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            const Icon(Icons.lock, size: 80),
+            const Icon(Icons.mobile_friendly, size: 100),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
 
-            // 📱 PHONE INPUT
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                sent ? "OTP Verification" : "Enter Phone Number",
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
             TextField(
               controller: phone,
               decoration: InputDecoration(
-                hintText: "Enter phone number",
+                hintText: "Enter Phone Number",
+                filled: true,
+                fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
 
             const SizedBox(height: 20),
 
-            // 🔢 OTP BOXES
             if (sent)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(6, (index) {
+                children: List.generate(6, (i) {
                   return SizedBox(
                     width: 45,
                     child: TextField(
-                      controller: otpControllers[index],
+                      controller: otp[i],
                       textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
                       maxLength: 1,
                       decoration: const InputDecoration(counterText: ""),
-                      onChanged: (value) {
-                        if (value.isNotEmpty && index < 5) {
-                          FocusScope.of(context).nextFocus();
-                        }
-                      },
                     ),
                   );
                 }),
               ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
 
-            // 🔘 BUTTON
+            if (sent)
+              const Text("59 Sec", style: TextStyle(color: Colors.red)),
+
+            const SizedBox(height: 20),
+
             GestureDetector(
               onTap: () async {
                 if (!sent) {
@@ -94,20 +100,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               },
               child: Container(
-                width: double.infinity,
                 height: 50,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Center(
                   child: Text(
-                    sent ? "Verify OTP" : "Get OTP",
+                    sent ? "Verify" : "Get OTP",
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

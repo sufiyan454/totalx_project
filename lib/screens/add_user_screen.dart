@@ -5,16 +5,15 @@ import 'package:provider/provider.dart';
 import '../models/user_model.dart';
 import '../providers/user_provider.dart';
 
-class AddUserScreen extends StatefulWidget {
-  const AddUserScreen({super.key});
+class AddUserDialog extends StatefulWidget {
+  const AddUserDialog({super.key});
 
   @override
-  State<AddUserScreen> createState() => _AddUserScreenState();
+  State<AddUserDialog> createState() => _AddUserDialogState();
 }
 
-class _AddUserScreenState extends State<AddUserScreen> {
+class _AddUserDialogState extends State<AddUserDialog> {
   final name = TextEditingController();
-  final phone = TextEditingController();
   final age = TextEditingController();
 
   File? image;
@@ -32,89 +31,102 @@ class _AddUserScreenState extends State<AddUserScreen> {
   Widget build(BuildContext context) {
     final p = Provider.of<UserProvider>(context, listen: false);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Add User")),
-      body: Padding(
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
+
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Add A New User",
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+
+            const SizedBox(height: 20),
 
             GestureDetector(
               onTap: pickImage,
               child: CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.grey[200],
+                radius: 40,
+                backgroundColor: Colors.blue[100],
                 backgroundImage:
                     image != null ? FileImage(image!) : null,
                 child: image == null
-                    ? const Icon(Icons.add, size: 30)
+                    ? const Icon(Icons.person, size: 30)
                     : null,
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
 
             TextField(
               controller: name,
               decoration: InputDecoration(
                 hintText: "Name",
+                filled: true,
+                fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
 
-            const SizedBox(height: 15),
-
-            TextField(
-              controller: phone,
-              decoration: InputDecoration(
-                hintText: "Phone",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
 
             TextField(
               controller: age,
               decoration: InputDecoration(
                 hintText: "Age",
+                filled: true,
+                fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
 
-            GestureDetector(
-              onTap: () {
-                p.addUser(
-                  UserModel(
-                    name: name.text,
-                    phone: phone.text,
-                    age: int.parse(age.text),
-                    image: image?.path ?? "",
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[300],
+                    ),
+                    child: const Text("Cancel",
+                        style: TextStyle(color: Colors.black)),
                   ),
-                );
-                Navigator.pop(context);
-              },
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(25),
                 ),
-                child: const Center(
-                  child: Text("Save",
-                      style: TextStyle(color: Colors.white)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      p.addUser(
+                        UserModel(
+                          name: name.text,
+                          phone: "",
+                          age: int.parse(age.text),
+                          image: image?.path ?? "",
+                        ),
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Save"),
+                  ),
                 ),
-              ),
-            ),
+              ],
+            )
           ],
         ),
       ),

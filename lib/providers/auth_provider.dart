@@ -9,7 +9,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> verifyOtp(String phone, String otp) async {
-    if (otp == "1234") {
+    if (otp == "123456") {
       isLoggedIn = true;
       notifyListeners();
     } else {
