@@ -71,8 +71,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
             const SizedBox(height: 20),
 
-            // 🔢 OTP BOXES
-            Row(
+            
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(6, (i) {
                 return SizedBox(
