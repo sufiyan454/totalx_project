@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:totakx_project/screens/add_user_screen.dart';
 import '../providers/user_provider.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -18,10 +17,7 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => const AddUserDialog(),
-          );
+          showDialog(context: context, builder: (_) => const AddUserDialog());
         },
         child: const Icon(Icons.add),
       ),
@@ -29,8 +25,6 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-
-            // 🔝 HEADER (BLACK)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -49,13 +43,10 @@ class HomeScreen extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            // 🔍 SEARCH + FILTER
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Row(
                 children: [
-
-                  // SEARCH BAR
                   Expanded(
                     child: TextField(
                       onChanged: p.search,
@@ -74,7 +65,6 @@ class HomeScreen extends StatelessWidget {
 
                   const SizedBox(width: 10),
 
-                  // FILTER BUTTON
                   GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
@@ -89,16 +79,22 @@ class HomeScreen extends StatelessWidget {
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Icon(Icons.menu, color: Colors.white),
+                      child: Icon(Icons.menu, color: Colors.white),
                     ),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 10),
-
-            // 📋 USER LIST
+            SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.only(right: 380),
+              child: Text(
+                'Users Lists',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 2),
             Expanded(
               child: ListView.builder(
                 itemCount: p.users.length,
@@ -107,7 +103,9 @@ class HomeScreen extends StatelessWidget {
 
                   return Container(
                     margin: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6),
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -128,12 +126,15 @@ class HomeScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(u.name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold)),
+                            Text(
+                              u.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             Text("Age: ${u.age}"),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   );
@@ -147,11 +148,10 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-
 Widget buildSortSheet(BuildContext context) {
   final p = Provider.of<UserProvider>(context, listen: false);
 
-  int selected = 0; // 0 = All, 1 = Elder, 2 = Younger
+  int selected = 0;
 
   return StatefulBuilder(
     builder: (context, setState) {
@@ -161,7 +161,6 @@ Widget buildSortSheet(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             const Text(
               "Sort",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -181,7 +180,6 @@ Widget buildSortSheet(BuildContext context) {
               title: const Text("All"),
             ),
 
-            // 🔘 ELDER
             RadioListTile(
               value: 1,
               groupValue: selected,
@@ -193,7 +191,6 @@ Widget buildSortSheet(BuildContext context) {
               title: const Text("Age: Elder"),
             ),
 
-            // 🔘 YOUNGER
             RadioListTile(
               value: 2,
               groupValue: selected,
