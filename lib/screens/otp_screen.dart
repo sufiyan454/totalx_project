@@ -120,7 +120,6 @@ class _OtpScreenState extends State<OtpScreen> {
 
             const SizedBox(height: 20),
 
-            // 🔘 VERIFY BUTTON
             GestureDetector(
               onTap: () async {
                 await auth.verifyOtp(widget.phone, getOtp());
