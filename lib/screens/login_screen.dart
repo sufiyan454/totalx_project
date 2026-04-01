@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            // 🖼️ IMAGE (replace with asset if needed)
+           
             const Icon(Icons.mobile_friendly, size: 100),
 
             const SizedBox(height: 30),
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             const SizedBox(height: 10),
 
-            // 📱 PHONE INPUT
+         
             TextField(
               controller: phone,
               keyboardType: TextInputType.phone,
@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onTap: () async {
                 await auth.sendOtp(phone.text);
 
-                // 👉 GO TO OTP SCREEN
+               
                 Navigator.push(
                   context,
                   MaterialPageRoute(
